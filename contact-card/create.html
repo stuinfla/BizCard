@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Create Your Digital Business Card</title>
+  <meta property="og:title" content="Digital Business Card Generator">
+  <meta property="og:description" content="Create a beautiful digital business card in seconds. Free, no signup required.">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 50%, #0d0d2b 100%);
+      color: #fff;
+      min-height: 100dvh;
+    }
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 16px;
+    }
+    .page-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .page-header h1 {
+      font-size: 28px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #60a5fa, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+    .page-header p {
+      font-size: 15px;
+      opacity: 0.6;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+    @media (max-width: 768px) {
+      .layout { grid-template-columns: 1fr; }
+      .preview-pane { order: -1; }
+    }
+    .form-pane {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 24px;
+    }
+    .form-section { margin-bottom: 20px; }
+    .form-section h3 {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.5;
+      margin-bottom: 12px;
+    }
+    .field { margin-bottom: 10px; }
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      opacity: 0.7;
+      margin-bottom: 4px;
+    }
+    .field input, .field textarea {
+      width: 100%;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .field input:focus, .field textarea:focus {
+      border-color: rgba(99,102,241,0.6);
+    }
+    .field input::placeholder, .field textarea::placeholder {
+      color: rgba(255,255,255,0.25);
+    }
+    .field textarea { resize: vertical; min-height: 60px; }
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .field-file { position: relative; }
+    .field-file input[type="file"] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer;
+    }
+    .field-file .file-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.08);
+      border: 1px dashed rgba(255,255,255,0.2);
+      border-radius: 8px;
+      color: rgba(255,255,255,0.6);
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .field-file:hover .file-btn { background: rgba(255,255,255,0.12); }
+    .field-file .file-btn.has-file {
+      border-style: solid;
+      border-color: rgba(99,102,241,0.4);
+      color: #a78bfa;
+    }
+    .color-row {
+      display: flex; gap: 10px; align-items: center;
+    }
+    .color-row input[type="color"] {
+      width: 40px; height: 36px; border: none; border-radius: 6px;
+      cursor: pointer; background: none; padding: 0;
+    }
+    .color-row span { font-size: 12px; opacity: 0.5; }
+    .actions {
+      display: flex; gap: 10px; margin-top: 20px;
+    }
+    .btn {
+      flex: 1; padding: 14px; border: none; border-radius: 12px;
+      font-size: 15px; font-weight: 700; cursor: pointer; text-align: center;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary {
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      color: #fff; box-shadow: 0 4px 18px rgba(37,99,235,0.3);
+    }
+    .btn-secondary {
+      background: rgba(255,255,255,0.1); color: #fff;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .preview-pane { position: sticky; top: 24px; }
+    .preview-label {
+      font-size: 13px; text-transform: uppercase; letter-spacing: 1px;
+      opacity: 0.5; margin-bottom: 12px; text-align: center;
+    }
+    .phone-frame {
+      width: 300px; margin: 0 auto; background: #000;
+      border-radius: 36px; padding: 12px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    }
+    .phone-screen {
+      border-radius: 26px; overflow: hidden;
+      background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 50%, #0d0d2b 100%);
+    }
+    .phone-screen .card { transform: scale(0.72); transform-origin: top center; }
+    .card { width: 100%; background: rgba(255,255,255,0.03); }
+    .p-banner {
+      width: 100%; height: 100px;
+      background: linear-gradient(135deg, var(--accent1, #2563eb), var(--accent2, #7c3aed));
+      background-size: cover; background-position: center;
+    }
+    .p-header { text-align: center; padding: 0 16px 10px; margin-top: -36px; }
+    .p-avatar {
+      width: 72px; height: 72px; border-radius: 50%;
+      border: 3px solid #0f0f2a; background: #1a1a3e;
+      margin: 0 auto 6px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 700; opacity: 0.3;
+    }
+    .p-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .p-name { font-size: 20px; font-weight: 700; }
+    .p-title { font-size: 12px; opacity: 0.7; }
+    .p-company { font-size: 13px; font-weight: 600; opacity: 0.9; }
+    .p-bio {
+      padding: 8px 16px; font-size: 11px; line-height: 1.4;
+      color: rgba(255,255,255,0.55);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .p-links {
+      display: grid; grid-template-columns: 1fr 1fr;
+      padding: 6px 10px; gap: 2px;
+    }
+    .p-link {
+      display: flex; align-items: center;
+      padding: 8px 6px; color: #fff; border-radius: 8px;
+    }
+    .p-icon {
+      width: 30px; height: 30px; border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      margin-right: 7px; font-size: 13px; flex-shrink: 0;
+    }
+    .p-icon.phone { background: #22c55e; }
+    .p-icon.email { background: #3b82f6; }
+    .p-icon.whatsapp { background: #25d366; }
+    .p-icon.web { background: #8b5cf6; }
+    .p-icon.linkedin { background: #0a66c2; }
+    .p-icon.twitter { background: #1d9bf0; }
+    .p-icon.calendar { background: #f59e0b; }
+    .p-icon.extra { background: #a855f7; }
+    .p-icon.address { background: #6366f1; }
+    .p-lbl { font-size: 12px; font-weight: 600; line-height: 1.2; }
+    .p-val { font-size: 9px; opacity: 0.5; line-height: 1.2; }
+    .p-link.full { grid-column: 1 / -1; }
+    .p-bottom {
+      display: flex; align-items: center;
+      padding: 10px 14px; gap: 10px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .p-savebtn {
+      flex: 1; padding: 10px; border: none; border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent1, #2563eb), var(--accent2, #7c3aed));
+      color: #fff; font-size: 14px; font-weight: 700; text-align: center;
+    }
+    .p-empty {
+      grid-column: 1 / -1; text-align: center;
+      opacity: 0.3; font-size: 12px; padding: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+  <div class="page-header">
+    <h1>Digital Business Card Generator</h1>
+    <p>Fill in your details, preview your card, and download a ready-to-deploy site.</p>
+  </div>
+
+  <div class="layout">
+    <div class="form-pane">
+      <div class="form-section">
+        <h3>Your Info</h3>
+        <div class="field">
+          <label>Full Name</label>
+          <input type="text" id="f-name" placeholder="Jane Smith" oninput="updatePreview()">
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Title</label>
+            <input type="text" id="f-title" placeholder="CEO &amp; Founder" oninput="updatePreview()">
+          </div>
+          <div class="field">
+            <label>Company</label>
+            <input type="text" id="f-company" placeholder="Acme Inc" oninput="updatePreview()">
+          </div>
+        </div>
+        <div class="field">
+          <label>Bio</label>
+          <textarea id="f-bio" placeholder="A short description about yourself..." oninput="updatePreview()"></textarea>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Photos</h3>
+        <div class="field-row">
+          <div class="field field-file">
+            <input type="file" id="f-photo" accept="image/*" onchange="handlePhoto(this)">
+            <div class="file-btn" id="photo-btn">Profile Photo</div>
+          </div>
+          <div class="field field-file">
+            <input type="file" id="f-banner" accept="image/*" onchange="handleBanner(this)">
+            <div class="file-btn" id="banner-btn">Banner Image</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Contact</h3>
+        <div class="field-row">
+          <div class="field">
+            <label>Phone</label>
+            <input type="tel" id="f-phone" placeholder="+1 (555) 123-4567" oninput="updatePreview()">
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input type="email" id="f-email" placeholder="jane@acme.com" oninput="updatePreview()">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>WhatsApp (optional)</label>
+            <input type="tel" id="f-whatsapp" placeholder="+1 (555) 123-4567" oninput="updatePreview()">
+          </div>
+          <div class="field">
+            <label>Website</label>
+            <input type="url" id="f-website" placeholder="https://acme.com" oninput="updatePreview()">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Social</h3>
+        <div class="field-row">
+          <div class="field">
+            <label>LinkedIn Username</label>
+            <input type="text" id="f-linkedin" placeholder="janesmith" oninput="updatePreview()">
+          </div>
+          <div class="field">
+            <label>Twitter / X Handle</label>
+            <input type="text" id="f-twitter" placeholder="janesmith" oninput="updatePreview()">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Extras</h3>
+        <div class="field-row">
+          <div class="field">
+            <label>Calendar Link (optional)</label>
+            <input type="url" id="f-calendar" placeholder="https://cal.com/jane" oninput="updatePreview()">
+          </div>
+          <div class="field">
+            <label>Extra Link (optional)</label>
+            <input type="url" id="f-extra-url" placeholder="https://..." oninput="updatePreview()">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Extra Link Label</label>
+            <input type="text" id="f-extra-label" placeholder="Portfolio" oninput="updatePreview()">
+          </div>
+          <div class="field">
+            <label>Address (optional)</label>
+            <input type="text" id="f-address" placeholder="123 Main St, City, ST 12345" oninput="updatePreview()">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Colors</h3>
+        <div class="field-row">
+          <div class="field">
+            <label>Accent Color 1</label>
+            <div class="color-row">
+              <input type="color" id="f-color1" value="#2563eb" oninput="updatePreview()">
+              <span>Banner &amp; button left</span>
+            </div>
+          </div>
+          <div class="field">
+            <label>Accent Color 2</label>
+            <div class="color-row">
+              <input type="color" id="f-color2" value="#7c3aed" oninput="updatePreview()">
+              <span>Banner &amp; button right</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Hosting</h3>
+        <div class="field">
+          <label>Your Card URL (for QR code — leave blank to skip QR)</label>
+          <input type="url" id="f-cardurl" placeholder="https://yourname.netlify.app" oninput="updatePreview()">
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-primary" onclick="downloadCard()">Download Card Site</button>
+        <button class="btn btn-secondary" onclick="downloadVCF()">Download .vcf</button>
+      </div>
+    </div>
+
+    <div class="preview-pane">
+      <div class="preview-label">Live Preview</div>
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="card" id="preview-card"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var photoData = null;
+var bannerData = null;
+
+function v(id) { return document.getElementById(id).value.trim(); }
+
+function handlePhoto(input) {
+  if (!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    photoData = e.target.result;
+    var btn = document.getElementById('photo-btn');
+    btn.textContent = 'Photo added';
+    btn.classList.add('has-file');
+    updatePreview();
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function handleBanner(input) {
+  if (!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    bannerData = e.target.result;
+    var btn = document.getElementById('banner-btn');
+    btn.textContent = 'Banner added';
+    btn.classList.add('has-file');
+    updatePreview();
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function e(s) {
+  var d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function updatePreview() {
+  var name = v('f-name') || 'Your Name';
+  var title = v('f-title') || 'Your Title';
+  var company = v('f-company') || 'Company';
+  var bio = v('f-bio');
+  var phone = v('f-phone');
+  var email = v('f-email');
+  var whatsapp = v('f-whatsapp');
+  var website = v('f-website');
+  var linkedin = v('f-linkedin');
+  var twitter = v('f-twitter');
+  var calendar = v('f-calendar');
+  var extraUrl = v('f-extra-url');
+  var extraLabel = v('f-extra-label') || 'Link';
+  var address = v('f-address');
+  var c1 = v('f-color1');
+  var c2 = v('f-color2');
+
+  // Build preview using DOM methods
+  var card = document.getElementById('preview-card');
+  card.textContent = '';
+
+  var banner = document.createElement('div');
+  banner.className = 'p-banner';
+  if (bannerData) {
+    banner.style.background = 'url(' + bannerData + ') center/cover no-repeat';
+  } else {
+    banner.style.background = 'linear-gradient(135deg,' + c1 + ',' + c2 + ')';
+  }
+  card.appendChild(banner);
+
+  var header = document.createElement('div');
+  header.className = 'p-header';
+
+  var avatar = document.createElement('div');
+  avatar.className = 'p-avatar';
+  if (photoData) {
+    var img = document.createElement('img');
+    img.src = photoData;
+    img.alt = name;
+    avatar.appendChild(img);
+  } else {
+    avatar.textContent = name.charAt(0);
+  }
+  header.appendChild(avatar);
+
+  var nameEl = document.createElement('div');
+  nameEl.className = 'p-name';
+  nameEl.textContent = name;
+  header.appendChild(nameEl);
+
+  var titleEl = document.createElement('div');
+  titleEl.className = 'p-title';
+  titleEl.textContent = title;
+  header.appendChild(titleEl);
+
+  var companyEl = document.createElement('div');
+  companyEl.className = 'p-company';
+  companyEl.textContent = company;
+  header.appendChild(companyEl);
+
+  card.appendChild(header);
+
+  if (bio) {
+    var bioEl = document.createElement('div');
+    bioEl.className = 'p-bio';
+    bioEl.textContent = bio;
+    card.appendChild(bioEl);
+  }
+
+  var links = document.createElement('div');
+  links.className = 'p-links';
+
+  function addLink(iconClass, iconText, label, value, full) {
+    var item = document.createElement('div');
+    item.className = 'p-link' + (full ? ' full' : '');
+    var icon = document.createElement('div');
+    icon.className = 'p-icon ' + iconClass;
+    icon.textContent = iconText;
+    item.appendChild(icon);
+    var info = document.createElement('div');
+    var lbl = document.createElement('div');
+    lbl.className = 'p-lbl';
+    lbl.textContent = label;
+    info.appendChild(lbl);
+    var val = document.createElement('div');
+    val.className = 'p-val';
+    val.textContent = value;
+    info.appendChild(val);
+    item.appendChild(info);
+    links.appendChild(item);
+  }
+
+  if (phone) addLink('phone', '\u260E', 'Phone', phone);
+  if (email) addLink('email', '\u2709', 'Email', email);
+  if (whatsapp) addLink('whatsapp', 'W', 'WhatsApp', whatsapp);
+  if (website) addLink('web', '\uD83C\uDF10', 'Website', website.replace(/^https?:\/\//, ''));
+  if (linkedin) addLink('linkedin', 'in', 'LinkedIn', linkedin);
+  if (twitter) addLink('twitter', 'X', 'Twitter / X', '@' + twitter);
+  if (calendar) addLink('calendar', '\uD83D\uDCC5', 'Schedule', 'Book a time');
+  if (extraUrl) addLink('extra', '\uD83D\uDD17', extraLabel, extraUrl.replace(/^https?:\/\//, ''));
+  if (address) addLink('address', '\uD83C\uDFE0', 'Address', address, true);
+
+  if (!links.hasChildNodes()) {
+    var empty = document.createElement('div');
+    empty.className = 'p-empty';
+    empty.textContent = 'Add contact info above';
+    links.appendChild(empty);
+  }
+
+  card.appendChild(links);
+
+  var bottom = document.createElement('div');
+  bottom.className = 'p-bottom';
+  var saveBtn = document.createElement('div');
+  saveBtn.className = 'p-savebtn';
+  saveBtn.style.background = 'linear-gradient(135deg,' + c1 + ',' + c2 + ')';
+  saveBtn.textContent = 'Save Contact';
+  bottom.appendChild(saveBtn);
+  card.appendChild(bottom);
+}
+
+function buildOutputHTML() {
+  var name = v('f-name') || 'Your Name';
+  var title = v('f-title') || 'Your Title';
+  var company = v('f-company') || 'Company';
+  var bio = v('f-bio');
+  var phone = v('f-phone');
+  var email = v('f-email');
+  var whatsapp = v('f-whatsapp');
+  var website = v('f-website');
+  var linkedin = v('f-linkedin');
+  var twitter = v('f-twitter');
+  var calendar = v('f-calendar');
+  var extraUrl = v('f-extra-url');
+  var extraLabel = v('f-extra-label') || 'Link';
+  var address = v('f-address');
+  var c1 = v('f-color1');
+  var c2 = v('f-color2');
+  var cardUrl = v('f-cardurl');
+  var phoneDigits = phone.replace(/\D/g, '');
+
+  var linksHtml = '';
+  if (phone) linksHtml += '    <a href="tel:+' + e(phoneDigits) + '" class="link-item">\n      <div class="link-icon phone">&#9742;</div>\n      <div><div class="link-label">Phone</div><div class="link-value">' + e(phone) + '</div></div>\n    </a>\n';
+  if (email) linksHtml += '    <a href="mailto:' + e(email) + '" class="link-item">\n      <div class="link-icon email">&#9993;</div>\n      <div><div class="link-label">Email</div><div class="link-value">' + e(email) + '</div></div>\n    </a>\n';
+  if (whatsapp) { var waD = whatsapp.replace(/\D/g,''); linksHtml += '    <a href="https://wa.me/' + waD + '" class="link-item">\n      <div class="link-icon whatsapp">W</div>\n      <div><div class="link-label">WhatsApp</div><div class="link-value">' + e(whatsapp) + '</div></div>\n    </a>\n'; }
+  if (website) linksHtml += '    <a href="' + e(website) + '" class="link-item" target="_blank">\n      <div class="link-icon web">&#127760;</div>\n      <div><div class="link-label">Website</div><div class="link-value">' + e(website.replace(/^https?:\/\//, '')) + '</div></div>\n    </a>\n';
+  if (linkedin) linksHtml += '    <a href="https://linkedin.com/in/' + e(linkedin) + '" class="link-item" target="_blank">\n      <div class="link-icon linkedin">in</div>\n      <div><div class="link-label">LinkedIn</div><div class="link-value">' + e(linkedin) + '</div></div>\n    </a>\n';
+  if (twitter) linksHtml += '    <a href="https://twitter.com/' + e(twitter) + '" class="link-item" target="_blank">\n      <div class="link-icon twitter">X</div>\n      <div><div class="link-label">Twitter / X</div><div class="link-value">@' + e(twitter) + '</div></div>\n    </a>\n';
+  if (calendar) linksHtml += '    <a href="' + e(calendar) + '" class="link-item" target="_blank">\n      <div class="link-icon calendar">&#128197;</div>\n      <div><div class="link-label">Schedule</div><div class="link-value">Book a time</div></div>\n    </a>\n';
+  if (extraUrl) linksHtml += '    <a href="' + e(extraUrl) + '" class="link-item" target="_blank">\n      <div class="link-icon extra">&#127891;</div>\n      <div><div class="link-label">' + e(extraLabel) + '</div><div class="link-value">' + e(extraUrl.replace(/^https?:\/\//, '')) + '</div></div>\n    </a>\n';
+  if (address) linksHtml += '    <a href="#" class="link-item full" onclick="navigator.clipboard.writeText(this.dataset.addr);this.querySelector(\'.link-value\').textContent=\'Copied!\';return false;" data-addr="' + e(address) + '">\n      <div class="link-icon address">&#127968;</div>\n      <div><div class="link-label">Address</div><div class="link-value">' + e(address) + '</div></div>\n    </a>\n';
+
+  var qrSection = '';
+  if (cardUrl) {
+    qrSection = '  <div class="bottom-row">\n    <div class="qr-box"><div id="qrcode"></div></div>\n    <div class="bottom-right">\n      <a href="contact.vcf" class="save-btn">Save Contact</a>\n      <div class="qr-actions">\n        <button class="qr-btn" onclick="downloadQR()">Download QR</button>\n        <button class="qr-btn" onclick="shareQR()">Share QR</button>\n      </div>\n    </div>\n  </div>\n';
+  } else {
+    qrSection = '  <div class="bottom-row">\n    <a href="contact.vcf" class="save-btn" style="width:100%">Save Contact</a>\n  </div>\n';
+  }
+
+  var qrScript = '';
+  if (cardUrl) {
+    qrScript = '\n<script>\n  var CARD_URL = \'' + e(cardUrl) + '\';\n  var QR_API = \'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=\' + encodeURIComponent(CARD_URL);\n  var QR_API_HI = \'https://api.qrserver.com/v1/create-qr-code/?size=512x512&data=\' + encodeURIComponent(CARD_URL);\n  var qrImg = document.createElement(\'img\');\n  qrImg.src = QR_API; qrImg.alt = \'QR Code\'; qrImg.width = 120; qrImg.height = 120; qrImg.style.display = \'block\';\n  document.getElementById(\'qrcode\').appendChild(qrImg);\n  function downloadQR() { var a=document.createElement(\'a\');a.href=QR_API_HI;a.download=\'QR.png\';a.target=\'_blank\';a.click(); }\n  async function shareQR() { if(navigator.share){try{await navigator.share({title:\'' + e(name) + '\',text:\'Scan to save my contact\',url:CARD_URL});return;}catch(ex){if(ex.name===\'AbortError\')return;}} if(navigator.clipboard){navigator.clipboard.writeText(CARD_URL).then(function(){var b=document.querySelector(\'.qr-btn:last-child\');b.textContent=\'Copied!\';setTimeout(function(){b.textContent=\'Share QR\';},2000);})} }\n</' + 'script>';
+  }
+
+  var html = '<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">\n  <title>' + e(name) + ' - ' + e(company) + '</title>\n  <meta property="og:title" content="' + e(name) + ' - ' + e(title) + ', ' + e(company) + '">\n  <meta property="og:description" content="' + e(bio || name + ' - ' + title) + '">\n  <style>\n    * { margin: 0; padding: 0; box-sizing: border-box; }\n    html, body { height: 100%; }\n    body {\n      font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, sans-serif;\n      background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 50%, #0d0d2b 100%);\n      color: #fff;\n      min-height: 100dvh;\n      display: flex;\n      justify-content: center;\n      align-items: center;\n    }\n    .card {\n      width: 100%;\n      max-width: 430px;\n      background: rgba(255,255,255,0.03);\n    }\n    .banner {\n      width: 100%;\n      height: 120px;\n      background: linear-gradient(135deg, ' + c1 + ', ' + c2 + ');\n    }\n    .header {\n      text-align: center;\n      padding: 0 20px 12px;\n      margin-top: -44px;\n    }\n    .avatar {\n      width: 88px; height: 88px;\n      border-radius: 50%;\n      border: 4px solid #0f0f2a;\n      background: #1a1a3e;\n      margin: 0 auto 8px;\n      overflow: hidden;\n      box-shadow: 0 4px 20px rgba(0,0,0,0.5);\n    }\n    .avatar img { width: 100%; height: 100%; object-fit: cover; }\n    .name { font-size: 24px; font-weight: 700; line-height: 1.2; }\n    .title-text { font-size: 14px; opacity: 0.7; margin-top: 2px; }\n    .company { font-size: 15px; font-weight: 600; opacity: 0.9; margin-top: 2px; }\n    .bio {\n      padding: 12px 20px;\n      font-size: 13px;\n      line-height: 1.5;\n      color: rgba(255,255,255,0.55);\n      border-bottom: 1px solid rgba(255,255,255,0.08);\n    }\n    .links {\n      display: grid;\n      grid-template-columns: 1fr 1fr;\n      padding: 8px 12px;\n      gap: 4px;\n    }\n    .link-item {\n      display: flex;\n      align-items: center;\n      padding: 12px 10px;\n      text-decoration: none;\n      color: #fff;\n      border-radius: 12px;\n    }\n    .link-item:active { background: rgba(255,255,255,0.07); }\n    .link-icon {\n      width: 38px; height: 38px;\n      border-radius: 10px;\n      display: flex; align-items: center; justify-content: center;\n      margin-right: 10px;\n      font-size: 17px;\n      flex-shrink: 0;\n    }\n    .link-icon.phone { background: #22c55e; }\n    .link-icon.email { background: #3b82f6; }\n    .link-icon.whatsapp { background: #25d366; }\n    .link-icon.web { background: #8b5cf6; }\n    .link-icon.linkedin { background: #0a66c2; }\n    .link-icon.twitter { background: #1d9bf0; }\n    .link-icon.calendar { background: #f59e0b; }\n    .link-icon.extra { background: #a855f7; }\n    .link-icon.address { background: #6366f1; }\n    .link-label { font-size: 14px; font-weight: 600; line-height: 1.2; }\n    .link-value { font-size: 11px; opacity: 0.5; line-height: 1.2; margin-top: 1px; }\n    .link-item.full { grid-column: 1 / -1; }\n    .bottom-row {\n      display: flex;\n      align-items: center;\n      padding: 16px 20px;\n      padding-bottom: max(16px, env(safe-area-inset-bottom, 16px));\n      gap: 16px;\n      border-top: 1px solid rgba(255,255,255,0.08);\n    }\n    .qr-box {\n      background: #fff;\n      padding: 6px;\n      border-radius: 12px;\n      flex-shrink: 0;\n      line-height: 0;\n    }\n    .qr-box img { display: block; }\n    .bottom-right {\n      flex: 1;\n      display: flex;\n      flex-direction: column;\n      gap: 10px;\n    }\n    .save-btn {\n      display: block;\n      width: 100%;\n      padding: 14px;\n      border: none;\n      border-radius: 14px;\n      background: linear-gradient(135deg, ' + c1 + ', ' + c2 + ');\n      color: #fff;\n      font-size: 17px;\n      font-weight: 700;\n      text-align: center;\n      text-decoration: none;\n      box-shadow: 0 4px 18px ' + c1 + '66;\n      -webkit-tap-highlight-color: transparent;\n    }\n    .save-btn:active { transform: scale(0.97); }\n    .qr-actions { display: flex; gap: 8px; }\n    .qr-btn {\n      flex: 1;\n      padding: 10px 8px;\n      border: 1px solid rgba(255,255,255,0.2);\n      border-radius: 10px;\n      background: rgba(255,255,255,0.08);\n      color: #fff;\n      font-size: 13px;\n      font-weight: 600;\n      cursor: pointer;\n      text-align: center;\n      -webkit-tap-highlight-color: transparent;\n    }\n    .qr-btn:active { background: rgba(255,255,255,0.15); }\n  </style>\n</head>\n<body>\n\n<div class="card">\n  <div class="banner"></div>\n  <div class="header">\n    <div class="avatar"><img src="images/profile.jpg" alt="' + e(name) + '"></div>\n    <div class="name">' + e(name) + '</div>\n    <div class="title-text">' + e(title) + '</div>\n    <div class="company">' + e(company) + '</div>\n  </div>\n' + (bio ? '  <div class="bio">' + e(bio) + '</div>\n' : '') + '  <div class="links">\n' + linksHtml + '  </div>\n' + qrSection + '</div>\n' + qrScript + '\n\n</body>\n</html>';
+
+  return html;
+}
+
+function buildVCF() {
+  var name = v('f-name') || 'Your Name';
+  var parts = name.split(' ');
+  var first = parts[0];
+  var last = parts.slice(1).join(' ') || '';
+  var lines = ['BEGIN:VCARD', 'VERSION:3.0'];
+  lines.push('N:' + last + ';' + first + ';;;');
+  lines.push('FN:' + name);
+  if (v('f-title')) lines.push('TITLE:' + v('f-title'));
+  if (v('f-company')) lines.push('ORG:' + v('f-company'));
+  if (v('f-phone')) lines.push('TEL;TYPE=CELL:' + v('f-phone'));
+  if (v('f-email')) lines.push('EMAIL;TYPE=INTERNET:' + v('f-email'));
+  if (v('f-website')) lines.push('URL:' + v('f-website'));
+  if (v('f-linkedin')) lines.push('X-SOCIALPROFILE;TYPE=linkedin:https://linkedin.com/in/' + v('f-linkedin'));
+  if (v('f-twitter')) lines.push('X-SOCIALPROFILE;TYPE=twitter:https://twitter.com/' + v('f-twitter'));
+  if (v('f-address')) lines.push('ADR;TYPE=WORK:;;' + v('f-address') + ';;;;');
+  lines.push('END:VCARD');
+  return lines.join('\n');
+}
+
+function downloadFile(content, filename, type) {
+  var blob = new Blob([content], { type: type });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function downloadCard() {
+  downloadFile(buildOutputHTML(), 'index.html', 'text/html');
+  setTimeout(function() { downloadVCF(); }, 500);
+}
+
+function downloadVCF() {
+  downloadFile(buildVCF(), 'contact.vcf', 'text/vcard');
+}
+
+updatePreview();
+</script>
+
+</body>
+</html>
