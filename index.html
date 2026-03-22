@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>BizCard — Free Digital Business Card</title>
+  <meta property="og:title" content="BizCard — Free Digital Business Card">
+  <meta property="og:description" content="Create a beautiful digital business card in seconds. Free, no signup required. Share via link or QR code.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💼</text></svg>">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 50%, #0d0d2b 100%);
+      color: #fff;
+      min-height: 100dvh;
+    }
+
+    /* ===== BUILDER ===== */
+    .page { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
+    .page-header { text-align: center; margin-bottom: 32px; }
+    .page-header h1 {
+      font-size: 28px; font-weight: 800;
+      background: linear-gradient(135deg, #60a5fa, #a78bfa);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+    .page-header p { font-size: 15px; opacity: 0.6; }
+    .layout { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
+    @media (max-width: 768px) {
+      .layout { grid-template-columns: 1fr; }
+      .preview-pane { order: -1; }
+    }
+    .form-pane {
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px; padding: 24px;
+    }
+    .form-section { margin-bottom: 20px; }
+    .form-section h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.5; margin-bottom: 12px; }
+    .field { margin-bottom: 10px; }
+    .field label { display: block; font-size: 12px; font-weight: 600; opacity: 0.7; margin-bottom: 4px; }
+    .field input, .field textarea {
+      width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15); border-radius: 8px;
+      color: #fff; font-size: 14px; font-family: inherit; outline: none; transition: border-color 0.2s;
+    }
+    .field input:focus, .field textarea:focus { border-color: rgba(99,102,241,0.6); }
+    .field input::placeholder, .field textarea::placeholder { color: rgba(255,255,255,0.25); }
+    .field textarea { resize: vertical; min-height: 60px; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .field-file { position: relative; }
+    .field-file input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .field-file .file-btn {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 10px 12px; background: rgba(255,255,255,0.08);
+      border: 1px dashed rgba(255,255,255,0.2); border-radius: 8px;
+      color: rgba(255,255,255,0.6); font-size: 13px; cursor: pointer;
+    }
+    .field-file:hover .file-btn { background: rgba(255,255,255,0.12); }
+    .field-file .file-btn.has-file { border-style: solid; border-color: rgba(99,102,241,0.4); color: #a78bfa; }
+    .color-row { display: flex; gap: 10px; align-items: center; }
+    .color-row input[type="color"] { width: 40px; height: 36px; border: none; border-radius: 6px; cursor: pointer; background: none; padding: 0; }
+    .color-row span { font-size: 12px; opacity: 0.5; }
+    .actions { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+    .btn {
+      flex: 1; padding: 14px; border: none; border-radius: 12px;
+      font-size: 15px; font-weight: 700; cursor: pointer; text-align: center; min-width: 140px;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary { background: linear-gradient(135deg, #2563eb, #7c3aed); color: #fff; box-shadow: 0 4px 18px rgba(37,99,235,0.3); }
+    .btn-secondary { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+    .btn-accent { background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff; box-shadow: 0 4px 18px rgba(34,197,94,0.3); }
+    .preview-pane { position: sticky; top: 24px; }
+    .preview-label { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.5; margin-bottom: 12px; text-align: center; }
+    .phone-frame { width: 300px; margin: 0 auto; background: #000; border-radius: 36px; padding: 12px; box-shadow: 0 8px 40px rgba(0,0,0,0.5); }
+    .phone-screen { border-radius: 26px; overflow: hidden; background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 50%, #0d0d2b 100%); }
+
+    /* ===== CARD STYLES (shared preview + viewer) ===== */
+    .card { width: 100%; background: rgba(255,255,255,0.03); }
+    .c-banner { width: 100%; height: 120px; background-size: cover; background-position: center; }
+    .c-header { text-align: center; padding: 0 20px 12px; margin-top: -44px; }
+    .c-avatar {
+      width: 88px; height: 88px; border-radius: 50%; border: 4px solid #0f0f2a;
+      background: #1a1a3e; margin: 0 auto 8px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; font-weight: 700; opacity: 0.4; box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+    .c-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .c-name { font-size: 24px; font-weight: 700; line-height: 1.2; }
+    .c-title { font-size: 14px; opacity: 0.7; margin-top: 2px; }
+    .c-company-row { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 4px; }
+    .c-logo { width: 22px; height: 22px; border-radius: 4px; object-fit: contain; }
+    .c-company { font-size: 15px; font-weight: 600; opacity: 0.9; }
+    .c-bio { padding: 12px 20px; font-size: 13px; line-height: 1.5; color: rgba(255,255,255,0.55); border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .c-links { display: grid; grid-template-columns: 1fr 1fr; padding: 8px 12px; gap: 4px; }
+    .c-link { display: flex; align-items: center; padding: 12px 10px; text-decoration: none; color: #fff; border-radius: 12px; }
+    .c-link:active { background: rgba(255,255,255,0.07); }
+    .c-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 17px; flex-shrink: 0; }
+    .c-icon.phone { background: #22c55e; }
+    .c-icon.email { background: #3b82f6; }
+    .c-icon.whatsapp { background: #25d366; }
+    .c-icon.web { background: #8b5cf6; }
+    .c-icon.linkedin { background: #0a66c2; }
+    .c-icon.twitter { background: #1d9bf0; }
+    .c-icon.calendar { background: #f59e0b; }
+    .c-icon.extra { background: #a855f7; }
+    .c-icon.address { background: #6366f1; }
+    .c-lbl { font-size: 14px; font-weight: 600; line-height: 1.2; }
+    .c-val { font-size: 11px; opacity: 0.5; line-height: 1.2; margin-top: 1px; }
+    .c-link.full { grid-column: 1 / -1; }
+    .c-empty { grid-column: 1 / -1; text-align: center; opacity: 0.3; font-size: 12px; padding: 8px; }
+    .c-bottom { display: flex; align-items: center; padding: 16px 20px; gap: 16px; border-top: 1px solid rgba(255,255,255,0.08); }
+    .c-qr-box { background: #fff; padding: 6px; border-radius: 12px; flex-shrink: 0; line-height: 0; }
+    .c-qr-box img { display: block; border-radius: 6px; }
+    .c-bottom-right { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+    .c-savebtn {
+      display: block; width: 100%; padding: 14px; border: none; border-radius: 14px;
+      color: #fff; font-size: 17px; font-weight: 700; text-align: center; cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .c-savebtn:active { transform: scale(0.97); }
+    .c-qr-actions { display: flex; gap: 8px; }
+    .c-qr-btn {
+      flex: 1; padding: 10px 8px; border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 10px; background: rgba(255,255,255,0.08);
+      color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; text-align: center;
+    }
+    .c-qr-btn:active { background: rgba(255,255,255,0.15); }
+
+    /* Preview scale */
+    .phone-screen .c-banner { height: 100px; }
+    .phone-screen .c-header { margin-top: -36px; padding: 0 16px 10px; }
+    .phone-screen .c-avatar { width: 72px; height: 72px; font-size: 24px; }
+    .phone-screen .c-name { font-size: 20px; }
+    .phone-screen .c-title { font-size: 12px; }
+    .phone-screen .c-logo { width: 18px; height: 18px; }
+    .phone-screen .c-company { font-size: 13px; }
+    .phone-screen .c-bio { font-size: 11px; padding: 8px 16px; }
+    .phone-screen .c-links { padding: 6px 10px; gap: 2px; }
+    .phone-screen .c-link { padding: 8px 6px; }
+    .phone-screen .c-icon { width: 30px; height: 30px; font-size: 13px; margin-right: 7px; }
+    .phone-screen .c-lbl { font-size: 12px; }
+    .phone-screen .c-val { font-size: 9px; }
+    .phone-screen .c-bottom { padding: 10px 14px; }
+    .phone-screen .c-savebtn { font-size: 14px; padding: 10px; }
+
+    /* Generated link section */
+    .generated-section {
+      margin-top: 20px; background: rgba(34,197,94,0.08);
+      border: 1px solid rgba(34,197,94,0.3); border-radius: 16px; padding: 20px; display: none;
+    }
+    .generated-section.show { display: block; }
+    .generated-section h3 { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #22c55e; }
+    .link-display { display: flex; gap: 8px; margin-bottom: 16px; }
+    .link-display input {
+      flex: 1; padding: 10px 12px; background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.15); border-radius: 8px;
+      color: #fff; font-size: 13px; font-family: monospace;
+    }
+    .link-display button {
+      padding: 10px 16px; border: none; border-radius: 8px;
+      background: #22c55e; color: #fff; font-weight: 700; font-size: 13px; cursor: pointer; white-space: nowrap;
+    }
+    .qr-preview { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .qr-preview img { border-radius: 12px; }
+    .qr-info { font-size: 13px; opacity: 0.7; line-height: 1.5; }
+    .qr-info strong { opacity: 1; color: #22c55e; }
+    .qr-download-btn {
+      display: inline-block; margin-top: 8px; padding: 8px 16px;
+      border: 1px solid rgba(255,255,255,0.2); border-radius: 8px;
+      background: rgba(255,255,255,0.08); color: #fff; font-size: 13px;
+      font-weight: 600; cursor: pointer;
+    }
+
+    /* ===== VIEWER ===== */
+    #app-viewer { display: none; min-height: 100dvh; justify-content: center; align-items: center; flex-direction: column; }
+    #app-viewer.active { display: flex; }
+    #app-builder.hidden { display: none; }
+    .viewer-card { width: 100%; max-width: 430px; }
+    .create-own-section { text-align: center; padding: 20px; border-top: 1px solid rgba(255,255,255,0.08); }
+    .create-own-section p { font-size: 13px; opacity: 0.5; margin-bottom: 10px; }
+    .create-own-btn {
+      display: inline-block; padding: 14px 32px;
+      background: linear-gradient(135deg, #60a5fa, #a78bfa);
+      color: #fff; font-size: 16px; font-weight: 700; border-radius: 14px;
+      text-decoration: none; box-shadow: 0 4px 18px rgba(96,165,250,0.3);
+    }
+    .create-own-btn:active { transform: scale(0.97); }
+    .create-own-sub { font-size: 11px; opacity: 0.35; margin-top: 6px; }
+  </style>
+</head>
+<body>
+
+<!-- BUILDER -->
+<div id="app-builder">
+  <div class="page">
+    <div class="page-header">
+      <h1>Create Your Digital Business Card</h1>
+      <p>Fill in your details, preview your card, and get a shareable link with QR code.</p>
+    </div>
+    <div class="layout">
+      <div class="form-pane">
+
+        <div class="form-section">
+          <h3>Your Info</h3>
+          <div class="field"><label>Full Name</label><input type="text" id="f-name" placeholder="Jane Smith" oninput="updatePreview()"></div>
+          <div class="field-row">
+            <div class="field"><label>Title</label><input type="text" id="f-title" placeholder="CEO &amp; Founder" oninput="updatePreview()"></div>
+            <div class="field"><label>Company</label><input type="text" id="f-company" placeholder="Acme Inc" oninput="updatePreview()"></div>
+          </div>
+          <div class="field"><label>Bio</label><textarea id="f-bio" placeholder="A short description about yourself..." oninput="updatePreview()"></textarea></div>
+        </div>
+
+        <div class="form-section">
+          <h3>Photos</h3>
+          <div class="field-row">
+            <div class="field field-file">
+              <input type="file" id="f-photo" accept="image/*" onchange="handlePhoto(this)">
+              <div class="file-btn" id="photo-btn">Profile Photo</div>
+            </div>
+            <div class="field field-file">
+              <input type="file" id="f-banner" accept="image/*" onchange="handleBanner(this)">
+              <div class="file-btn" id="banner-btn">Banner Image</div>
+            </div>
+          </div>
+          <div class="field"><label>Profile Image URL (for shareable link)</label><input type="url" id="f-photo-url" placeholder="https://example.com/photo.jpg" oninput="updatePreview()"></div>
+          <div class="field-row">
+            <div class="field"><label>Banner Image URL (optional)</label><input type="url" id="f-banner-url" placeholder="https://example.com/banner.jpg" oninput="updatePreview()"></div>
+            <div class="field"><label>Company Logo URL (optional)</label><input type="url" id="f-logo-url" placeholder="https://example.com/logo.png" oninput="updatePreview()"></div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Contact</h3>
+          <div class="field-row">
+            <div class="field"><label>Phone</label><input type="tel" id="f-phone" placeholder="+1 (555) 123-4567" oninput="updatePreview()"></div>
+            <div class="field"><label>Email</label><input type="email" id="f-email" placeholder="jane@acme.com" oninput="updatePreview()"></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label>WhatsApp (optional)</label><input type="tel" id="f-whatsapp" placeholder="+1 (555) 123-4567" oninput="updatePreview()"></div>
+            <div class="field"><label>Website</label><input type="url" id="f-website" placeholder="https://acme.com" oninput="updatePreview()"></div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Social</h3>
+          <div class="field-row">
+            <div class="field"><label>LinkedIn Username</label><input type="text" id="f-linkedin" placeholder="janesmith" oninput="updatePreview()"></div>
+            <div class="field"><label>Twitter / X Handle</label><input type="text" id="f-twitter" placeholder="janesmith" oninput="updatePreview()"></div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Extras</h3>
+          <div class="field-row">
+            <div class="field"><label>Calendar Link (optional)</label><input type="url" id="f-calendar" placeholder="https://cal.com/jane" oninput="updatePreview()"></div>
+            <div class="field"><label>Extra Link (optional)</label><input type="url" id="f-extra-url" placeholder="https://..." oninput="updatePreview()"></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label>Extra Link Label</label><input type="text" id="f-extra-label" placeholder="Portfolio" oninput="updatePreview()"></div>
+            <div class="field"><label>Address (optional)</label><input type="text" id="f-address" placeholder="123 Main St, City, ST 12345" oninput="updatePreview()"></div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Colors</h3>
+          <div class="field-row">
+            <div class="field">
+              <label>Accent Color 1</label>
+              <div class="color-row"><input type="color" id="f-color1" value="#2563eb" oninput="updatePreview()"><span>Banner &amp; button left</span></div>
+            </div>
+            <div class="field">
+              <label>Accent Color 2</label>
+              <div class="color-row"><input type="color" id="f-color2" value="#7c3aed" oninput="updatePreview()"><span>Banner &amp; button right</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-accent" onclick="generateLink()">Generate Shareable Link</button>
+          <button class="btn btn-primary" onclick="doDownloadCard()">Download Card</button>
+          <button class="btn btn-secondary" onclick="doDownloadVCF()">Download .vcf</button>
+        </div>
+
+        <div class="generated-section" id="generated-section">
+          <h3>Your Card Link is Ready!</h3>
+          <div class="link-display">
+            <input type="text" id="generated-url" readonly>
+            <button onclick="copyLink()">Copy</button>
+          </div>
+          <div class="qr-preview">
+            <img id="generated-qr" width="150" height="150" alt="QR Code">
+            <div class="qr-info">
+              <strong>Scan or share this QR code</strong><br>
+              Anyone who scans it will see your card.<br>
+              Save the QR image to your phone for easy sharing.
+              <br><button class="qr-download-btn" onclick="downloadQR()">Download QR Image</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="preview-pane">
+        <div class="preview-label">Live Preview</div>
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="card" id="preview-card"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VIEWER -->
+<div id="app-viewer">
+  <div class="viewer-card">
+    <div class="card" id="viewer-card"></div>
+    <div class="create-own-section">
+      <p>Like this card?</p>
+      <a class="create-own-btn" id="create-own-link" href="#">Create Your Own Card</a>
+      <div class="create-own-sub">Free &mdash; No signup required</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------- state ---------- */
+var photoData = null;
+var bannerData = null;
+
+/* ---------- helpers ---------- */
+function v(id) { return document.getElementById(id).value.trim(); }
+
+function esc(s) {
+  var d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function downloadFile(content, name, type) {
+  var b = new Blob([content], { type: type });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(b);
+  a.download = name;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+/* ---------- image handlers ---------- */
+function handlePhoto(input) {
+  if (!input.files || !input.files[0]) return;
+  var r = new FileReader();
+  r.onload = function(e) {
+    photoData = e.target.result;
+    document.getElementById('photo-btn').textContent = 'Photo added';
+    document.getElementById('photo-btn').classList.add('has-file');
+    updatePreview();
+  };
+  r.readAsDataURL(input.files[0]);
+}
+
+function handleBanner(input) {
+  if (!input.files || !input.files[0]) return;
+  var r = new FileReader();
+  r.onload = function(e) {
+    bannerData = e.target.result;
+    document.getElementById('banner-btn').textContent = 'Banner added';
+    document.getElementById('banner-btn').classList.add('has-file');
+    updatePreview();
+  };
+  r.readAsDataURL(input.files[0]);
+}
+
+/* ---------- card data ---------- */
+function getCardData() {
+  return {
+    n: v('f-name'), t: v('f-title'), co: v('f-company'), b: v('f-bio'),
+    ph: v('f-phone'), em: v('f-email'), wa: v('f-whatsapp'), w: v('f-website'),
+    li: v('f-linkedin'), tw: v('f-twitter'), cal: v('f-calendar'),
+    eu: v('f-extra-url'), el: v('f-extra-label'), ad: v('f-address'),
+    c1: v('f-color1'), c2: v('f-color2'),
+    img: v('f-photo-url'), ban: v('f-banner-url'), logo: v('f-logo-url')
+  };
+}
+
+/* ---------- URL encode / decode ---------- */
+function encodeCard(data) {
+  var clean = {};
+  for (var k in data) {
+    if (data[k] && data[k] !== '#2563eb' && data[k] !== '#7c3aed') clean[k] = data[k];
+  }
+  return btoa(unescape(encodeURIComponent(JSON.stringify(clean))));
+}
+
+function decodeCard(str) {
+  try { return JSON.parse(decodeURIComponent(escape(atob(str)))); }
+  catch (e) { return null; }
+}
+
+/* ---------- build card DOM ---------- */
+function buildCardDOM(container, data, opts) {
+  opts = opts || {};
+  var name    = data.n  || 'Your Name';
+  var title   = data.t  || 'Your Title';
+  var company = data.co || 'Company';
+  var c1      = data.c1 || '#2563eb';
+  var c2      = data.c2 || '#7c3aed';
+  var imgSrc  = opts.photoData || data.img;
+  var banSrc  = opts.bannerData || data.ban;
+
+  container.textContent = '';
+
+  // Banner
+  var ban = document.createElement('div');
+  ban.className = 'c-banner';
+  ban.style.background = banSrc
+    ? 'url(' + banSrc + ') center/cover no-repeat'
+    : 'linear-gradient(135deg,' + c1 + ',' + c2 + ')';
+  container.appendChild(ban);
+
+  // Header
+  var hdr = document.createElement('div');
+  hdr.className = 'c-header';
+
+  var av = document.createElement('div');
+  av.className = 'c-avatar';
+  if (imgSrc) { var im = document.createElement('img'); im.src = imgSrc; im.alt = name; av.appendChild(im); }
+  else { av.textContent = name.charAt(0); }
+  hdr.appendChild(av);
+
+  var nm = document.createElement('div'); nm.className = 'c-name'; nm.textContent = name; hdr.appendChild(nm);
+  var tt = document.createElement('div'); tt.className = 'c-title'; tt.textContent = title; hdr.appendChild(tt);
+
+  var crow = document.createElement('div'); crow.className = 'c-company-row';
+  if (data.logo) { var lg = document.createElement('img'); lg.className = 'c-logo'; lg.src = data.logo; lg.alt = ''; crow.appendChild(lg); }
+  var cs = document.createElement('span'); cs.className = 'c-company'; cs.textContent = company; crow.appendChild(cs);
+  hdr.appendChild(crow);
+  container.appendChild(hdr);
+
+  // Bio
+  if (data.b) { var bio = document.createElement('div'); bio.className = 'c-bio'; bio.textContent = data.b; container.appendChild(bio); }
+
+  // Links
+  var links = document.createElement('div');
+  links.className = 'c-links';
+
+  function addLink(cls, icon, label, val, href, full) {
+    var a = document.createElement('a');
+    a.className = 'c-link' + (full ? ' full' : '');
+    a.href = href || '#'; if (href && href !== '#') { a.target = '_blank'; a.rel = 'noopener'; }
+    var ic = document.createElement('div'); ic.className = 'c-icon ' + cls; ic.textContent = icon; a.appendChild(ic);
+    var info = document.createElement('div');
+    var lb = document.createElement('div'); lb.className = 'c-lbl'; lb.textContent = label; info.appendChild(lb);
+    var vl = document.createElement('div'); vl.className = 'c-val'; vl.textContent = val; info.appendChild(vl);
+    a.appendChild(info); links.appendChild(a);
+  }
+
+  if (data.ph) addLink('phone','\u260E','Phone',data.ph,'tel:+'+data.ph.replace(/\D/g,''));
+  if (data.em) addLink('email','\u2709','Email',data.em,'mailto:'+data.em);
+  if (data.wa) addLink('whatsapp','W','WhatsApp',data.wa,'https://wa.me/'+data.wa.replace(/\D/g,''));
+  if (data.w)  addLink('web','\uD83C\uDF10','Website',data.w.replace(/^https?:\/\//,''),data.w);
+  if (data.li) addLink('linkedin','in','LinkedIn',data.li,'https://linkedin.com/in/'+data.li);
+  if (data.tw) addLink('twitter','X','Twitter / X','@'+data.tw,'https://twitter.com/'+data.tw);
+  if (data.cal) addLink('calendar','\uD83D\uDCC5','Schedule','Book a time',data.cal);
+  if (data.eu) addLink('extra','\uD83D\uDD17',data.el||'Link',data.eu.replace(/^https?:\/\//,''),data.eu);
+  if (data.ad) addLink('address','\uD83C\uDFE0','Address',data.ad,'https://maps.google.com/?q='+encodeURIComponent(data.ad),true);
+
+  if (!links.hasChildNodes()) { var em = document.createElement('div'); em.className = 'c-empty'; em.textContent = 'Add contact info above'; links.appendChild(em); }
+  container.appendChild(links);
+
+  // Bottom
+  var bot = document.createElement('div'); bot.className = 'c-bottom';
+
+  if (opts.isViewer && data.url) {
+    var qb = document.createElement('div'); qb.className = 'c-qr-box';
+    var qi = document.createElement('img');
+    qi.src = 'https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=' + encodeURIComponent(data.url);
+    qi.width = 120; qi.height = 120; qi.alt = 'QR'; qb.appendChild(qi); bot.appendChild(qb);
+
+    var br = document.createElement('div'); br.className = 'c-bottom-right';
+    var sb = document.createElement('button'); sb.className = 'c-savebtn';
+    sb.style.background = 'linear-gradient(135deg,' + c1 + ',' + c2 + ')';
+    sb.style.boxShadow = '0 4px 18px ' + c1 + '66';
+    sb.textContent = 'Save Contact';
+    sb.onclick = function() { downloadFile(buildVCF(data), 'contact.vcf', 'text/vcard'); };
+    br.appendChild(sb);
+
+    var qa = document.createElement('div'); qa.className = 'c-qr-actions';
+    var shB = document.createElement('button'); shB.className = 'c-qr-btn'; shB.textContent = 'Share';
+    shB.onclick = function() {
+      if (navigator.share) { navigator.share({ title: name, text: 'Check out my business card', url: data.url }).catch(function(){}); }
+      else if (navigator.clipboard) { navigator.clipboard.writeText(data.url).then(function(){ shB.textContent='Copied!'; setTimeout(function(){ shB.textContent='Share'; },2000); }); }
+    };
+    qa.appendChild(shB);
+
+    var dq = document.createElement('button'); dq.className = 'c-qr-btn'; dq.textContent = 'Save QR';
+    dq.onclick = function() {
+      var a = document.createElement('a');
+      a.href = 'https://api.qrserver.com/v1/create-qr-code/?size=512x512&data=' + encodeURIComponent(data.url);
+      a.download = 'QR-' + name.replace(/\s+/g,'-') + '.png'; a.target = '_blank'; a.click();
+    };
+    qa.appendChild(dq);
+    br.appendChild(qa); bot.appendChild(br);
+  } else {
+    var sb2 = document.createElement('div'); sb2.className = 'c-savebtn'; sb2.style.width = '100%';
+    sb2.style.background = 'linear-gradient(135deg,' + c1 + ',' + c2 + ')';
+    sb2.textContent = 'Save Contact'; bot.appendChild(sb2);
+  }
+
+  container.appendChild(bot);
+}
+
+/* ---------- VCF ---------- */
+function buildVCF(data) {
+  var name = data.n || 'Your Name';
+  var parts = name.split(' ');
+  var lines = ['BEGIN:VCARD','VERSION:3.0'];
+  lines.push('N:' + (parts.slice(1).join(' ')||'') + ';' + parts[0] + ';;;');
+  lines.push('FN:' + name);
+  if (data.t)  lines.push('TITLE:' + data.t);
+  if (data.co) lines.push('ORG:' + data.co);
+  if (data.ph) lines.push('TEL;TYPE=CELL:' + data.ph);
+  if (data.em) lines.push('EMAIL;TYPE=INTERNET:' + data.em);
+  if (data.w)  lines.push('URL:' + data.w);
+  if (data.li) lines.push('X-SOCIALPROFILE;TYPE=linkedin:https://linkedin.com/in/' + data.li);
+  if (data.tw) lines.push('X-SOCIALPROFILE;TYPE=twitter:https://twitter.com/' + data.tw);
+  if (data.ad) lines.push('ADR;TYPE=WORK:;;' + data.ad + ';;;;');
+  if (data.img) lines.push('PHOTO;VALUE=URI:' + data.img);
+  lines.push('END:VCARD');
+  return lines.join('\n');
+}
+
+/* ---------- preview ---------- */
+function updatePreview() {
+  var data = getCardData();
+  buildCardDOM(document.getElementById('preview-card'), data, {
+    photoData: photoData || data.img,
+    bannerData: bannerData || data.ban
+  });
+}
+
+/* ---------- generate link ---------- */
+function generateLink() {
+  var data = getCardData();
+  if (!data.n) { alert('Please enter your name first.'); return; }
+  var url = location.origin + location.pathname + '#card=' + encodeCard(data);
+  document.getElementById('generated-url').value = url;
+  document.getElementById('generated-qr').src = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + encodeURIComponent(url);
+  var sec = document.getElementById('generated-section');
+  sec.classList.add('show');
+  sec.scrollIntoView({ behavior: 'smooth' });
+}
+
+function copyLink() {
+  var inp = document.getElementById('generated-url');
+  inp.select();
+  navigator.clipboard.writeText(inp.value).then(function() {
+    var btn = inp.nextElementSibling;
+    btn.textContent = 'Copied!'; setTimeout(function(){ btn.textContent = 'Copy'; }, 2000);
+  });
+}
+
+function downloadQR() {
+  var url = document.getElementById('generated-url').value;
+  var a = document.createElement('a');
+  a.href = 'https://api.qrserver.com/v1/create-qr-code/?size=512x512&data=' + encodeURIComponent(url);
+  a.download = 'BizCard-QR.png'; a.target = '_blank'; a.click();
+}
+
+/* ---------- download standalone HTML ---------- */
+function doDownloadCard() {
+  var data = getCardData();
+  var name    = data.n  || 'Your Name';
+  var title   = data.t  || 'Your Title';
+  var company = data.co || 'Company';
+  var c1      = data.c1 || '#2563eb';
+  var c2      = data.c2 || '#7c3aed';
+  var appUrl  = location.origin + location.pathname;
+
+  // Build avatar HTML
+  var avatarHTML;
+  if (photoData) avatarHTML = '<div class="c-avatar"><img src="' + photoData + '" alt="' + esc(name) + '"></div>';
+  else if (data.img) avatarHTML = '<div class="c-avatar"><img src="' + esc(data.img) + '" alt="' + esc(name) + '"></div>';
+  else avatarHTML = '<div class="c-avatar">' + esc(name.charAt(0)) + '</div>';
+
+  // Banner style
+  var banStyle;
+  if (bannerData) banStyle = 'background:url(' + bannerData + ') center/cover no-repeat';
+  else if (data.ban) banStyle = 'background:url(' + esc(data.ban) + ') center/cover no-repeat';
+  else banStyle = 'background:linear-gradient(135deg,' + c1 + ',' + c2 + ')';
+
+  // Company HTML
+  var compHTML = data.logo
+    ? '<div class="c-company-row"><img class="c-logo" src="' + esc(data.logo) + '" alt=""><span class="c-company">' + esc(company) + '</span></div>'
+    : '<div class="c-company-row"><span class="c-company">' + esc(company) + '</span></div>';
+
+  // Links
+  var lh = '';
+  if (data.ph) lh += '<a href="tel:+' + esc(data.ph.replace(/\D/g,'')) + '" class="c-link"><div class="c-icon phone">&#9742;</div><div><div class="c-lbl">Phone</div><div class="c-val">' + esc(data.ph) + '</div></div></a>';
+  if (data.em) lh += '<a href="mailto:' + esc(data.em) + '" class="c-link"><div class="c-icon email">&#9993;</div><div><div class="c-lbl">Email</div><div class="c-val">' + esc(data.em) + '</div></div></a>';
+  if (data.wa) lh += '<a href="https://wa.me/' + data.wa.replace(/\D/g,'') + '" class="c-link"><div class="c-icon whatsapp">W</div><div><div class="c-lbl">WhatsApp</div><div class="c-val">' + esc(data.wa) + '</div></div></a>';
+  if (data.w) lh += '<a href="' + esc(data.w) + '" class="c-link" target="_blank"><div class="c-icon web">&#127760;</div><div><div class="c-lbl">Website</div><div class="c-val">' + esc(data.w.replace(/^https?:\/\//,'')) + '</div></div></a>';
+  if (data.li) lh += '<a href="https://linkedin.com/in/' + esc(data.li) + '" class="c-link" target="_blank"><div class="c-icon linkedin">in</div><div><div class="c-lbl">LinkedIn</div><div class="c-val">' + esc(data.li) + '</div></div></a>';
+  if (data.tw) lh += '<a href="https://twitter.com/' + esc(data.tw) + '" class="c-link" target="_blank"><div class="c-icon twitter">X</div><div><div class="c-lbl">Twitter / X</div><div class="c-val">@' + esc(data.tw) + '</div></div></a>';
+  if (data.cal) lh += '<a href="' + esc(data.cal) + '" class="c-link" target="_blank"><div class="c-icon calendar">&#128197;</div><div><div class="c-lbl">Schedule</div><div class="c-val">Book a time</div></div></a>';
+  if (data.eu) lh += '<a href="' + esc(data.eu) + '" class="c-link" target="_blank"><div class="c-icon extra">&#128279;</div><div><div class="c-lbl">' + esc(data.el||'Link') + '</div><div class="c-val">' + esc(data.eu.replace(/^https?:\/\//,'')) + '</div></div></a>';
+  if (data.ad) lh += '<a href="https://maps.google.com/?q=' + encodeURIComponent(data.ad) + '" class="c-link full" target="_blank"><div class="c-icon address">&#127968;</div><div><div class="c-lbl">Address</div><div class="c-val">' + esc(data.ad) + '</div></div></a>';
+
+  var vcfStr = buildVCF(data).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\n/g,'\\n');
+
+  var html = '<!DOCTYPE html><html lang="en"><head>' +
+    '<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">' +
+    '<title>' + esc(name) + ' - ' + esc(company) + '</title>' +
+    '<meta property="og:title" content="' + esc(name) + ' - ' + esc(title) + ', ' + esc(company) + '">' +
+    '<meta property="og:description" content="' + esc(data.b || name + ' - ' + title) + '">' +
+    '<style>' +
+    '*{margin:0;padding:0;box-sizing:border-box}html,body{height:100%}' +
+    'body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:linear-gradient(135deg,#0a0a1a,#1a1a3e,#0d0d2b);color:#fff;min-height:100dvh;display:flex;justify-content:center;align-items:center;flex-direction:column}' +
+    '.card{width:100%;max-width:430px;background:rgba(255,255,255,.03)}' +
+    '.c-banner{width:100%;height:120px;background-size:cover;background-position:center}' +
+    '.c-header{text-align:center;padding:0 20px 12px;margin-top:-44px}' +
+    '.c-avatar{width:88px;height:88px;border-radius:50%;border:4px solid #0f0f2a;background:#1a1a3e;margin:0 auto 8px;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;opacity:.4;box-shadow:0 4px 20px rgba(0,0,0,.5)}' +
+    '.c-avatar img{width:100%;height:100%;object-fit:cover}' +
+    '.c-name{font-size:24px;font-weight:700;line-height:1.2}' +
+    '.c-title{font-size:14px;opacity:.7;margin-top:2px}' +
+    '.c-company-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px}' +
+    '.c-logo{width:22px;height:22px;border-radius:4px;object-fit:contain}' +
+    '.c-company{font-size:15px;font-weight:600;opacity:.9}' +
+    '.c-bio{padding:12px 20px;font-size:13px;line-height:1.5;color:rgba(255,255,255,.55);border-bottom:1px solid rgba(255,255,255,.08)}' +
+    '.c-links{display:grid;grid-template-columns:1fr 1fr;padding:8px 12px;gap:4px}' +
+    '.c-link{display:flex;align-items:center;padding:12px 10px;text-decoration:none;color:#fff;border-radius:12px}' +
+    '.c-link:active{background:rgba(255,255,255,.07)}' +
+    '.c-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-right:10px;font-size:17px;flex-shrink:0}' +
+    '.c-icon.phone{background:#22c55e}.c-icon.email{background:#3b82f6}.c-icon.whatsapp{background:#25d366}' +
+    '.c-icon.web{background:#8b5cf6}.c-icon.linkedin{background:#0a66c2}.c-icon.twitter{background:#1d9bf0}' +
+    '.c-icon.calendar{background:#f59e0b}.c-icon.extra{background:#a855f7}.c-icon.address{background:#6366f1}' +
+    '.c-lbl{font-size:14px;font-weight:600;line-height:1.2}' +
+    '.c-val{font-size:11px;opacity:.5;line-height:1.2;margin-top:1px}' +
+    '.c-link.full{grid-column:1/-1}' +
+    '.c-bottom{display:flex;align-items:center;padding:16px 20px;gap:16px;border-top:1px solid rgba(255,255,255,.08)}' +
+    '.c-qr-box{background:#fff;padding:6px;border-radius:12px;flex-shrink:0;line-height:0}' +
+    '.c-qr-box img{display:block;border-radius:6px}' +
+    '.c-bottom-right{flex:1;display:flex;flex-direction:column;gap:10px}' +
+    '.c-savebtn{display:block;width:100%;padding:14px;border:none;border-radius:14px;color:#fff;font-size:17px;font-weight:700;text-align:center;cursor:pointer}' +
+    '.c-savebtn:active{transform:scale(.97)}' +
+    '.c-qr-actions{display:flex;gap:8px}' +
+    '.c-qr-btn{flex:1;padding:10px 8px;border:1px solid rgba(255,255,255,.2);border-radius:10px;background:rgba(255,255,255,.08);color:#fff;font-size:13px;font-weight:600;cursor:pointer;text-align:center}' +
+    '.c-qr-btn:active{background:rgba(255,255,255,.15)}' +
+    '.create-own{text-align:center;padding:20px;border-top:1px solid rgba(255,255,255,.08)}' +
+    '.create-own p{font-size:13px;opacity:.5;margin-bottom:10px}' +
+    '.create-own a{display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#60a5fa,#a78bfa);color:#fff;font-size:16px;font-weight:700;border-radius:14px;text-decoration:none;box-shadow:0 4px 18px rgba(96,165,250,.3)}' +
+    '.create-own a:active{transform:scale(.97)}' +
+    '.create-own small{display:block;font-size:11px;opacity:.35;margin-top:6px}' +
+    '</style></head><body>' +
+    '<div class="card">' +
+    '<div class="c-banner" style="' + banStyle + '"></div>' +
+    '<div class="c-header">' + avatarHTML +
+    '<div class="c-name">' + esc(name) + '</div>' +
+    '<div class="c-title">' + esc(title) + '</div>' +
+    compHTML + '</div>' +
+    (data.b ? '<div class="c-bio">' + esc(data.b) + '</div>' : '') +
+    '<div class="c-links">' + lh + '</div>' +
+    '<div class="c-bottom">' +
+    '<div class="c-qr-box"><div id="qrcode"></div></div>' +
+    '<div class="c-bottom-right">' +
+    '<button class="c-savebtn" style="background:linear-gradient(135deg,' + c1 + ',' + c2 + ');box-shadow:0 4px 18px ' + c1 + '66" onclick="saveContact()">Save Contact</button>' +
+    '<div class="c-qr-actions">' +
+    '<button class="c-qr-btn" onclick="shareCard()">Share</button>' +
+    '<button class="c-qr-btn" onclick="dlQR()">Save QR</button>' +
+    '</div></div></div>' +
+    '<div class="create-own"><p>Like this card?</p>' +
+    '<a href="' + esc(appUrl) + '">Create Your Own Card</a>' +
+    '<small>Free &mdash; No signup required</small></div>' +
+    '</div>' +
+    '<' + 'script>' +
+    'var U=location.href,QA="https://api.qrserver.com/v1/create-qr-code/?size=",QS=QA+"120x120&data="+encodeURIComponent(U),QH=QA+"512x512&data="+encodeURIComponent(U);' +
+    'var qi=document.createElement("img");qi.src=QS;qi.width=120;qi.height=120;qi.alt="QR";qi.style.display="block";qi.style.borderRadius="6px";' +
+    'document.getElementById("qrcode").appendChild(qi);' +
+    'function dlQR(){var a=document.createElement("a");a.href=QH;a.download="QR.png";a.target="_blank";a.click()}' +
+    'function shareCard(){if(navigator.share){navigator.share({title:"' + esc(name) + '",url:U}).catch(function(){})}else if(navigator.clipboard){navigator.clipboard.writeText(U).then(function(){event.target.textContent="Copied!";setTimeout(function(){event.target.textContent="Share"},2e3)})}}' +
+    'function saveContact(){var v=\'' + vcfStr + '\';var b=new Blob([v],{type:"text/vcard"});var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="contact.vcf";a.click();URL.revokeObjectURL(a.href)}' +
+    '</' + 'script></body></html>';
+
+  downloadFile(html, 'index.html', 'text/html');
+  setTimeout(function() { doDownloadVCF(); }, 500);
+}
+
+function doDownloadVCF() {
+  var data = getCardData();
+  downloadFile(buildVCF(data), 'contact.vcf', 'text/vcard');
+}
+
+/* ---------- viewer mode ---------- */
+function showViewer(encoded) {
+  var data = decodeCard(encoded);
+  if (!data) { showBuilder(); return; }
+  data.url = location.href;
+
+  document.getElementById('app-builder').classList.add('hidden');
+  document.getElementById('app-viewer').classList.add('active');
+  buildCardDOM(document.getElementById('viewer-card'), data, { isViewer: true });
+  document.getElementById('create-own-link').href = location.origin + location.pathname;
+  document.title = (data.n || 'Business Card') + ' - ' + (data.co || 'BizCard');
+}
+
+function showBuilder() {
+  document.getElementById('app-builder').classList.remove('hidden');
+  document.getElementById('app-viewer').classList.remove('active');
+}
+
+/* ---------- init ---------- */
+(function() {
+  var h = location.hash;
+  if (h && h.indexOf('#card=') === 0) { showViewer(h.substring(6)); }
+  else { showBuilder(); updatePreview(); }
+
+  window.addEventListener('hashchange', function() {
+    var h = location.hash;
+    if (h && h.indexOf('#card=') === 0) { showViewer(h.substring(6)); }
+    else { showBuilder(); updatePreview(); }
+  });
+})();
+</script>
+
+</body>
+</html>
