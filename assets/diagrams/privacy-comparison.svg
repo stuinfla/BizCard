@@ -46,8 +46,8 @@
   <text x="580" y="244" class="title" text-anchor="middle" fill="#ef4444">You have no idea &amp; no control</text>
   <!-- Divider -->
   <line x1="50" y1="290" x2="850" y2="290" class="divider"/>
-  <!-- Section 2: BizCard -->
-  <text x="450" y="320" class="section-label" text-anchor="middle" fill="#22c55e">BizCard</text>
+  <!-- Section 2: Share My Card -->
+  <text x="450" y="320" class="section-label" text-anchor="middle" fill="#22c55e">Share My Card</text>
   <!-- You -->
   <rect x="150" y="345" width="140" height="70" class="box-green"/>
   <text x="220" y="385" class="title" text-anchor="middle" fill="#22c55e">You</text>

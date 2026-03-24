@@ -35,5 +35,5 @@
   <!-- Step 5 -->
   <rect x="130" y="350" width="440" height="50" class="box-accent"/>
   <text x="350" y="370" class="title" text-anchor="middle">Final URL</text>
-  <text x="350" y="388" class="code" text-anchor="middle">bizcard-gen.netlify.app/#card=eyJuIjoiSmFuZSBTbWl0aC...</text>
+  <text x="350" y="388" class="code" text-anchor="middle">sharemycard.netlify.app/#card=eyJuIjoiSmFuZSBTbWl0aC...</text>
 </svg>

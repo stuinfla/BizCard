@@ -817,7 +817,7 @@ function showViewer(encoded) {
   document.getElementById('app-viewer').classList.add('active');
   buildCardDOM(document.getElementById('viewer-card'), data, { isViewer: true });
   document.getElementById('create-own-link').href = location.origin + location.pathname;
-  document.title = (data.n || 'Business Card') + ' - ' + (data.co || 'BizCard');
+  document.title = (data.n || 'Business Card') + ' - ' + (data.co || 'Share My Card');
 }
 
 function showBuilder() {

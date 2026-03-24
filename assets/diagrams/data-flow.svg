@@ -38,7 +38,7 @@
   <!-- Row 2: URL + QR -->
   <rect x="570" y="195" width="290" height="90" class="box-accent"/>
   <text x="715" y="225" class="title" text-anchor="middle">URL with hash</text>
-  <text x="715" y="248" class="desc" text-anchor="middle">bizcard-gen.netlify.app</text>
+  <text x="715" y="248" class="desc" text-anchor="middle">sharemycard.netlify.app</text>
   <text x="715" y="268" class="desc" text-anchor="middle">/#card=eyJuIjoi...</text>
   <!-- Down arrow to QR -->
   <line x1="715" y1="285" x2="715" y2="335" class="arrow-down"/>
