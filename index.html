@@ -71,19 +71,32 @@
     .page-header p a:hover { text-decoration: underline; }
     .layout { display: grid; grid-template-columns: 1fr 420px; gap: 40px; align-items: start; }
     @media (max-width: 860px) {
-      .layout { grid-template-columns: 1fr; gap: 24px; }
+      .layout { grid-template-columns: 1fr; gap: 20px; }
       .preview-pane { order: -1; position: relative !important; top: auto !important; }
-      .phone-frame { width: 260px; }
+      .phone-frame { width: 280px; }
       .page-header h1 { font-size: 30px; }
-      .field-row { grid-template-columns: 1fr; }
     }
     @media (max-width: 480px) {
-      .page { padding: 20px 14px; }
-      .page-header h1 { font-size: 26px; }
-      .page-header { margin-bottom: 24px; }
-      .form-pane { padding: 18px 14px; }
-      .actions { flex-direction: column; }
-      .btn { min-width: 100%; }
+      .page { padding: 16px 12px; }
+      .page-header h1 { font-size: 24px; }
+      .page-header p { font-size: 13px; }
+      .page-header { margin-bottom: 20px; }
+      .form-pane { padding: 16px 12px; border-radius: 14px; }
+      .field-row { grid-template-columns: 1fr; gap: 8px; }
+      .field { margin-bottom: 10px; }
+      .field input, .field textarea { padding: 12px; font-size: 16px; }
+      .field label { font-size: 11px; margin-bottom: 4px; }
+      .actions { flex-direction: column; gap: 8px; }
+      .btn { min-width: 100%; padding: 16px; font-size: 15px; }
+      .phone-frame { width: 240px; padding: 10px; border-radius: 32px; }
+      .phone-screen { border-radius: 24px; }
+      .preview-label { font-size: 10px; margin-bottom: 10px; }
+      .form-section h3 { font-size: 10px; margin-bottom: 10px; }
+      .generated-section { padding: 16px; }
+      .link-display { flex-direction: column; }
+      .link-display input { font-size: 11px; }
+      .qr-preview { flex-direction: column; align-items: flex-start; }
+      .color-row span { font-size: 11px; }
     }
     .form-pane {
       background: var(--surface); border: 1px solid var(--surface-border);

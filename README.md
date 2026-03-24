@@ -48,7 +48,7 @@ The key insight: your card data is the URL. Nothing is stored anywhere else.
                                                              v
  +------------------+     +------------------+     +--------------------+
  |  Card renders    | <-- |  JSON decoded    | <-- |  URL with hash     |
- |  with clickable  |     |  from base64     |     |  bizcard-gen.      |
+ |  with clickable  |     |  from base64     |     |  sharemycard.      |
  |  contacts, QR,   |     |  in URL hash     |     |  netlify.app       |
  |  save/share btns |     +------------------+     |  /#card=eyJuIjoi...|
  +------------------+                              +--------------------+
