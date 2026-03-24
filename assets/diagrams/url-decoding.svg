@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 420" width="700" height="420">
+  <defs>
+    <style>
+      .box { fill: #1a1a3e; stroke: #60a5fa; stroke-width: 2; rx: 10; }
+      .box-accent { fill: #1e293b; stroke: #22c55e; stroke-width: 2; rx: 10; }
+      .title { fill: #f1f5f9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; font-weight: 700; }
+      .code { fill: #94a3b8; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 11px; }
+      .arrow { stroke: #22c55e; stroke-width: 2; fill: none; marker-end: url(#ah); }
+      .label { fill: #64748b; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+    </style>
+    <marker id="ah" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/></marker>
+  </defs>
+  <rect width="700" height="420" fill="#0a0a1a" rx="14"/>
+  <text x="350" y="28" class="label" text-anchor="middle" fill="#22c55e">Decoding (Viewer Side)</text>
+  <!-- Step 1 -->
+  <rect x="130" y="45" width="440" height="50" class="box"/>
+  <text x="350" y="65" class="title" text-anchor="middle">URL hash fragment</text>
+  <text x="350" y="83" class="code" text-anchor="middle">#card=eyJuIjoiSmFuZSBTbWl0aC...</text>
+  <line x1="350" y1="95" x2="350" y2="120" class="arrow"/>
+  <!-- Step 2 -->
+  <rect x="200" y="125" width="300" height="45" class="box"/>
+  <text x="350" y="145" class="title" text-anchor="middle">atob (base64 decode)</text>
+  <text x="350" y="161" class="code" text-anchor="middle">UTF-8 encoded string</text>
+  <line x1="350" y1="170" x2="350" y2="195" class="arrow"/>
+  <!-- Step 3 -->
+  <rect x="200" y="200" width="300" height="45" class="box"/>
+  <text x="350" y="220" class="title" text-anchor="middle">decodeURIComponent(escape(...))</text>
+  <text x="350" y="236" class="code" text-anchor="middle">&apos;{&quot;n&quot;:&quot;Jane Smith&quot;,&quot;ph&quot;:&quot;+1 555-1234&quot;}&apos;</text>
+  <line x1="350" y1="245" x2="350" y2="270" class="arrow"/>
+  <!-- Step 4 -->
+  <rect x="200" y="275" width="300" height="45" class="box"/>
+  <text x="350" y="295" class="title" text-anchor="middle">JSON.parse</text>
+  <text x="350" y="311" class="code" text-anchor="middle">{ n: &quot;Jane Smith&quot;, ph: &quot;+1 555-1234&quot; }</text>
+  <line x1="350" y1="320" x2="350" y2="345" class="arrow"/>
+  <!-- Step 5 -->
+  <rect x="130" y="350" width="440" height="50" class="box-accent"/>
+  <text x="350" y="370" class="title" text-anchor="middle" fill="#22c55e">Card renders</text>
+  <text x="350" y="388" class="code" text-anchor="middle">clickable links, QR code, save/share buttons</text>
+</svg>

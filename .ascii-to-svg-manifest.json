@@ -1,0 +1,41 @@
+{
+  "version": "1.0.0",
+  "lastSync": "2026-03-24T11:40:00Z",
+  "diagrams": [
+    {
+      "id": "data-flow",
+      "sourceFile": "README.md",
+      "sourceLine": 33,
+      "svgFile": "assets/diagrams/data-flow.svg",
+      "lastConverted": "2026-03-24T11:40:00Z"
+    },
+    {
+      "id": "sharing-flow",
+      "sourceFile": "README.md",
+      "sourceLine": 68,
+      "svgFile": "assets/diagrams/sharing-flow.svg",
+      "lastConverted": "2026-03-24T11:40:00Z"
+    },
+    {
+      "id": "privacy-comparison",
+      "sourceFile": "README.md",
+      "sourceLine": 99,
+      "svgFile": "assets/diagrams/privacy-comparison.svg",
+      "lastConverted": "2026-03-24T11:40:00Z"
+    },
+    {
+      "id": "url-encoding",
+      "sourceFile": "README.md",
+      "sourceLine": 262,
+      "svgFile": "assets/diagrams/url-encoding.svg",
+      "lastConverted": "2026-03-24T11:40:00Z"
+    },
+    {
+      "id": "url-decoding",
+      "sourceFile": "README.md",
+      "sourceLine": 283,
+      "svgFile": "assets/diagrams/url-decoding.svg",
+      "lastConverted": "2026-03-24T11:40:00Z"
+    }
+  ]
+}

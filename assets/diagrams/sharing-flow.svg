@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 460" width="900" height="460">
+  <defs>
+    <style>
+      .box { fill: #1a1a3e; stroke: #60a5fa; stroke-width: 2; rx: 12; }
+      .box-green { fill: #0f2a1a; stroke: #22c55e; stroke-width: 2; rx: 12; }
+      .box-purple { fill: #1e1a3e; stroke: #a78bfa; stroke-width: 2; rx: 12; }
+      .box-amber { fill: #2a1f0f; stroke: #f59e0b; stroke-width: 2; rx: 12; }
+      .label { fill: #94a3b8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+      .title { fill: #f1f5f9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 700; }
+      .desc { fill: #94a3b8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 12px; }
+      .arrow { stroke: #60a5fa; stroke-width: 2; fill: none; marker-end: url(#ah); }
+      .arrow-green { stroke: #22c55e; stroke-width: 2; fill: none; marker-end: url(#ah-green); }
+      .share-label { fill: #64748b; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 11px; font-style: italic; }
+    </style>
+    <marker id="ah" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#60a5fa"/></marker>
+    <marker id="ah-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/></marker>
+  </defs>
+  <rect width="900" height="460" fill="#0a0a1a" rx="16"/>
+  <!-- Column labels -->
+  <text x="120" y="30" class="label" text-anchor="middle">Creator</text>
+  <text x="420" y="30" class="label" text-anchor="middle">Sharing</text>
+  <text x="720" y="30" class="label" text-anchor="middle">Recipient</text>
+  <!-- Build card -->
+  <rect x="30" y="55" width="180" height="70" class="box"/>
+  <text x="120" y="85" class="title" text-anchor="middle">Build card</text>
+  <text x="120" y="103" class="desc" text-anchor="middle">in browser</text>
+  <!-- Arrow: URL -->
+  <line x1="210" y1="90" x2="300" y2="90" class="arrow"/>
+  <text x="255" y="80" class="share-label" text-anchor="middle">URL</text>
+  <!-- Shareable link + QR -->
+  <rect x="310" y="55" width="220" height="70" class="box-purple"/>
+  <text x="420" y="85" class="title" text-anchor="middle">Shareable link + QR</text>
+  <text x="420" y="103" class="desc" text-anchor="middle">copy, scan, text, email</text>
+  <!-- Arrow: open URL -->
+  <line x1="530" y1="90" x2="620" y2="90" class="arrow"/>
+  <text x="575" y="80" class="share-label" text-anchor="middle">open</text>
+  <!-- View card -->
+  <rect x="630" y="55" width="180" height="70" class="box"/>
+  <text x="720" y="85" class="title" text-anchor="middle">View full card</text>
+  <text x="720" y="103" class="desc" text-anchor="middle">clickable contacts</text>
+  <!-- Action branches -->
+  <line x1="720" y1="125" x2="720" y2="165" class="arrow"/>
+  <!-- Three action boxes -->
+  <rect x="540" y="175" width="140" height="65" class="box-green"/>
+  <text x="610" y="200" class="title" text-anchor="middle" fill="#22c55e">Save Contact</text>
+  <text x="610" y="220" class="desc" text-anchor="middle">.vcf download</text>
+  <rect x="700" y="175" width="140" height="65" class="box"/>
+  <text x="770" y="200" class="title" text-anchor="middle">Share URL</text>
+  <text x="770" y="220" class="desc" text-anchor="middle">native share / copy</text>
+  <!-- Connector lines -->
+  <line x1="720" y1="165" x2="610" y2="175" stroke="#60a5fa" stroke-width="1.5" fill="none"/>
+  <line x1="720" y1="165" x2="770" y2="175" stroke="#60a5fa" stroke-width="1.5" fill="none"/>
+  <line x1="720" y1="165" x2="450" y2="270" stroke="#22c55e" stroke-width="1.5" fill="none"/>
+  <!-- Create Your Own - the viral loop -->
+  <rect x="340" y="275" width="220" height="65" class="box-amber"/>
+  <text x="450" y="300" class="title" text-anchor="middle" fill="#f59e0b">Create Your Own Card</text>
+  <text x="450" y="318" class="desc" text-anchor="middle">links back to builder</text>
+  <!-- Viral loop arrow back to Creator -->
+  <path d="M 340 307 Q 200 307 120 155 L 120 125" class="arrow-green" stroke-dasharray="6,4"/>
+  <!-- Viral loop label -->
+  <rect x="130" y="200" width="90" height="24" rx="6" fill="#0f2a1a" stroke="#22c55e" stroke-width="1"/>
+  <text x="175" y="216" class="desc" text-anchor="middle" fill="#22c55e">viral loop</text>
+  <!-- Bottom summary -->
+  <rect x="30" y="400" width="840" height="40" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <text x="450" y="425" class="desc" text-anchor="middle" fill="#22c55e">Every card creates a new potential card creator. Growth is built into the product.</text>
+</svg>
