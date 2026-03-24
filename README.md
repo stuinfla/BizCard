@@ -2,7 +2,7 @@
 
 **Free, open-source digital business cards. No accounts. No servers. No one else touching your data.**
 
-[Try it now](https://bizcard-gen.netlify.app) -- [See an example card](https://stuart-kerr-card.netlify.app)
+[Try it now](https://sharemycard.netlify.app) -- [See an example card](https://stuart-kerr-card.netlify.app)
 
 ---
 
@@ -199,7 +199,7 @@ BizCard/
 
 ### Use it online (no setup)
 
-Go to **[bizcard-gen.netlify.app](https://bizcard-gen.netlify.app)** and start building your card.
+Go to **[sharemycard.netlify.app](https://sharemycard.netlify.app)** and start building your card.
 
 ### Run it locally
 
@@ -240,7 +240,7 @@ Share My Card is a static site. Deploy it anywhere:
 
 ### Creating a card
 
-1. Open the builder at [bizcard-gen.netlify.app](https://bizcard-gen.netlify.app)
+1. Open the builder at [sharemycard.netlify.app](https://sharemycard.netlify.app)
 2. Fill in your details (name, title, company, contact info, socials)
 3. Upload or link a profile photo, banner image, and company logo
 4. Pick your brand colors using the color pickers
@@ -295,7 +295,7 @@ encodeURIComponent (handle Unicode)  ->  UTF-8 safe string
 btoa (base64 encode)  ->  eyJuIjoiSmFuZSBTbWl0aCIsInBoIjoiKzEgNTU1LT...
      |
      v
-URL:  https://bizcard-gen.netlify.app/#card=eyJuIjoiSmFuZSBTbWl0aC...
+URL:  https://sharemycard.netlify.app/#card=eyJuIjoiSmFuZSBTbWl0aC...
 ```
 
 </details>
@@ -360,7 +360,7 @@ There is no toolchain to set up, no packages to install, and no CI pipeline to f
 
 ## Links
 
-- **Builder**: [bizcard-gen.netlify.app](https://bizcard-gen.netlify.app)
+- **Builder**: [sharemycard.netlify.app](https://sharemycard.netlify.app)
 - **Example card**: [stuart-kerr-card.netlify.app](https://stuart-kerr-card.netlify.app)
 - **GitHub**: [github.com/stuinfla/BizCard](https://github.com/stuinfla/BizCard)
 
